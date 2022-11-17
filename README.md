@@ -1,5 +1,7 @@
 # go2rtc
 
+**forked for my study and use**
+
 Ultimate camera streaming application with support RTSP, WebRTC, HomeKit, FFmpeg, RTMP, etc.
 
 ![](assets/go2rtc.png)
