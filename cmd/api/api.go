@@ -2,13 +2,14 @@ package api
 
 import (
 	"encoding/json"
+	"net"
+	"net/http"
+
 	"github.com/AlexxIT/go2rtc/cmd/app"
 	"github.com/AlexxIT/go2rtc/cmd/streams"
 	"github.com/AlexxIT/go2rtc/pkg/streamer"
 	"github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
-	"net"
-	"net/http"
 )
 
 func Init() {
@@ -86,7 +87,7 @@ var wsHandlers = make(map[string]WSHandler)
 func streamsHandler(w http.ResponseWriter, r *http.Request) {
 	src := r.URL.Query().Get("src")
 	name := r.URL.Query().Get("name")
-	
+
 	if name == "" {
 		name = src
 	}
