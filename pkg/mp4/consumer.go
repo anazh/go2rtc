@@ -2,6 +2,7 @@ package mp4
 
 import (
 	"encoding/json"
+
 	"github.com/AlexxIT/go2rtc/pkg/aac"
 	"github.com/AlexxIT/go2rtc/pkg/h264"
 	"github.com/AlexxIT/go2rtc/pkg/h265"
@@ -25,18 +26,18 @@ type Consumer struct {
 func (c *Consumer) GetMedias() []*streamer.Media {
 	return []*streamer.Media{
 		{
-			Kind:      streamer.KindVideo,
-			Direction: streamer.DirectionRecvonly,
+			Kind:      streamer.KindVideo,         //video kind
+			Direction: streamer.DirectionRecvonly, //only recv
 			Codecs: []*streamer.Codec{
-				{Name: streamer.CodecH264},
-				{Name: streamer.CodecH265},
+				{Name: streamer.CodecH264}, //h264 code
+				{Name: streamer.CodecH265}, //h265 code
 			},
 		},
 		{
-			Kind:      streamer.KindAudio,
-			Direction: streamer.DirectionRecvonly,
+			Kind:      streamer.KindAudio,         //voice kind
+			Direction: streamer.DirectionRecvonly, //only recv
 			Codecs: []*streamer.Codec{
-				{Name: streamer.CodecAAC},
+				{Name: streamer.CodecAAC}, //acc code
 			},
 		},
 	}

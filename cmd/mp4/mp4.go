@@ -1,15 +1,16 @@
 package mp4
 
 import (
+	"net/http"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/AlexxIT/go2rtc/cmd/api"
 	"github.com/AlexxIT/go2rtc/cmd/app"
 	"github.com/AlexxIT/go2rtc/cmd/streams"
 	"github.com/AlexxIT/go2rtc/pkg/mp4"
 	"github.com/rs/zerolog"
-	"net/http"
-	"strconv"
-	"strings"
-	"time"
 )
 
 func Init() {
@@ -62,23 +63,21 @@ func handlerKeyframe(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// handler stream to mp4 for client
 func handlerMP4(w http.ResponseWriter, r *http.Request) {
 	if isChromeFirst(w, r) || isSafari(w, r) {
 		return
 	}
-
 	log.Trace().Msgf("[api.mp4] %+v", r)
-
-	src := r.URL.Query().Get("src")
+	src := r.URL.Query().Get("src") //stream address
 	stream := streams.GetOrNew(src)
 	if stream == nil {
+		log.Debug().Msgf("handlerMP4", src, "not find")
 		return
 	}
-
 	exit := make(chan error)
-
-	cons := &mp4.Consumer{}
-	cons.Listen(func(msg interface{}) {
+	cons := &mp4.Consumer{}             //define a mp4 consumer
+	cons.Listen(func(msg interface{}) { //define listen event
 		if data, ok := msg.([]byte); ok {
 			if _, err := w.Write(data); err != nil && exit != nil {
 				exit <- err
@@ -86,29 +85,23 @@ func handlerMP4(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	})
-
-	if err := stream.AddConsumer(cons); err != nil {
+	if err := stream.AddConsumer(cons); err != nil { //push a consumer to this stream
 		log.Error().Err(err).Caller().Send()
 		return
 	}
+	defer stream.RemoveConsumer(cons) //register close event
 
-	defer stream.RemoveConsumer(cons)
-
-	w.Header().Set("Content-Type", cons.MimeType())
-
+	w.Header().Set("Content-Type", cons.MimeType()) //for browser
 	data, err := cons.Init()
 	if err != nil {
 		log.Error().Err(err).Caller().Send()
 		return
 	}
-
 	if _, err = w.Write(data); err != nil {
 		log.Error().Err(err).Caller().Send()
 		return
 	}
-
 	cons.Start()
-
 	var duration *time.Timer
 	if s := r.URL.Query().Get("duration"); s != "" {
 		if i, _ := strconv.Atoi(s); i > 0 {
@@ -120,11 +113,8 @@ func handlerMP4(w http.ResponseWriter, r *http.Request) {
 			})
 		}
 	}
-
-	err = <-exit
-
+	err = <-exit //wait to exit
 	log.Trace().Err(err).Caller().Send()
-
 	if duration != nil {
 		duration.Stop()
 	}

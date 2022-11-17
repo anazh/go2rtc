@@ -2,9 +2,10 @@ package streams
 
 import (
 	"fmt"
-	"github.com/AlexxIT/go2rtc/pkg/streamer"
 	"strings"
 	"sync"
+
+	"github.com/AlexxIT/go2rtc/pkg/streamer"
 )
 
 type Handler func(url string) (streamer.Producer, error)
@@ -25,7 +26,7 @@ func getHandler(url string) Handler {
 	}
 	handlersMu.Lock()
 	defer handlersMu.Unlock()
-	return handlers[url[:i]]
+	return handlers[url[:i]] //rtsp||http....
 }
 
 func HasProducer(url string) bool {

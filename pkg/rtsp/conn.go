@@ -7,12 +7,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/AlexxIT/go2rtc/pkg/aac"
-	"github.com/AlexxIT/go2rtc/pkg/h264"
-	"github.com/AlexxIT/go2rtc/pkg/streamer"
-	"github.com/AlexxIT/go2rtc/pkg/tcp"
-	"github.com/pion/rtcp"
-	"github.com/pion/rtp"
 	"io"
 	"net"
 	"net/http"
@@ -20,6 +14,13 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/AlexxIT/go2rtc/pkg/aac"
+	"github.com/AlexxIT/go2rtc/pkg/h264"
+	"github.com/AlexxIT/go2rtc/pkg/streamer"
+	"github.com/AlexxIT/go2rtc/pkg/tcp"
+	"github.com/pion/rtcp"
+	"github.com/pion/rtp"
 )
 
 const (

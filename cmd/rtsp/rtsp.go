@@ -1,14 +1,15 @@
 package rtsp
 
 import (
+	"net"
+	"strings"
+
 	"github.com/AlexxIT/go2rtc/cmd/app"
 	"github.com/AlexxIT/go2rtc/cmd/streams"
 	"github.com/AlexxIT/go2rtc/pkg/rtsp"
 	"github.com/AlexxIT/go2rtc/pkg/streamer"
 	"github.com/AlexxIT/go2rtc/pkg/tcp"
 	"github.com/rs/zerolog"
-	"net"
-	"strings"
 )
 
 func Init() {
@@ -72,7 +73,6 @@ var handlers []Handler
 
 func rtspHandler(url string) (streamer.Producer, error) {
 	backchannel := true
-
 	if i := strings.IndexByte(url, '#'); i > 0 {
 		if url[i+1:] == "backchannel=0" {
 			backchannel = false
@@ -84,7 +84,6 @@ func rtspHandler(url string) (streamer.Producer, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	conn.UserAgent = app.UserAgent
 
 	if log.Trace().Enabled() {
@@ -103,7 +102,7 @@ func rtspHandler(url string) (streamer.Producer, error) {
 	}
 
 	conn.Backchannel = backchannel
-	if err = conn.Describe(); err != nil {
+	if err = conn.Describe(); err != nil { //this get steamer info
 		if !backchannel {
 			return nil, err
 		}

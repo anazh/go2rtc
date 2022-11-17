@@ -1,10 +1,11 @@
 package streams
 
 import (
-	"github.com/AlexxIT/go2rtc/pkg/streamer"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/AlexxIT/go2rtc/pkg/streamer"
 )
 
 type state byte
@@ -42,19 +43,16 @@ func (p *Producer) GetMedias() []*streamer.Media {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	if p.state == stateNone {
+	if p.state == stateNone { // get stream state
 		log.Debug().Msgf("[streams] probe producer url=%s", p.url)
-
 		var err error
 		p.element, err = GetProducer(p.url)
 		if err != nil || p.element == nil {
 			log.Error().Err(err).Caller().Send()
 			return nil
 		}
-
 		p.state = stateMedias
 	}
-
 	return p.element.GetMedias()
 }
 

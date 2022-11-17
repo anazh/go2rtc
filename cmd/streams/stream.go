@@ -3,8 +3,9 @@ package streams
 import (
 	"encoding/json"
 	"errors"
-	"github.com/AlexxIT/go2rtc/pkg/streamer"
 	"sync"
+
+	"github.com/AlexxIT/go2rtc/pkg/streamer"
 )
 
 type Consumer struct {
@@ -61,7 +62,7 @@ func (s *Stream) AddConsumer(cons streamer.Consumer) (err error) {
 			Msgf("[streams] consumer=%d candidate=%d", ic, icc)
 
 	producers:
-		for ip, prod := range s.producers {
+		for ip, prod := range s.producers { //is include produce url
 			// Step 2. Get producer medias (not tracks yet)
 			for ipc, prodMedia := range prod.GetMedias() {
 				log.Trace().Stringer("media", prodMedia).
