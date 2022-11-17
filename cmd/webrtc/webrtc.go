@@ -1,6 +1,10 @@
 package webrtc
 
 import (
+	"io/ioutil"
+	"net"
+	"net/http"
+
 	"github.com/AlexxIT/go2rtc/cmd/api"
 	"github.com/AlexxIT/go2rtc/cmd/app"
 	"github.com/AlexxIT/go2rtc/cmd/streams"
@@ -8,9 +12,6 @@ import (
 	"github.com/AlexxIT/go2rtc/pkg/webrtc"
 	pion "github.com/pion/webrtc/v3"
 	"github.com/rs/zerolog"
-	"io/ioutil"
-	"net"
-	"net/http"
 )
 
 func Init() {
