@@ -2,12 +2,13 @@ package app
 
 import (
 	"flag"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
-	"gopkg.in/yaml.v3"
 	"io"
 	"os"
 	"runtime"
+
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	"gopkg.in/yaml.v3"
 )
 
 var Version = "0.1-rc.3"
@@ -58,7 +59,7 @@ func NewLogger(format string, level string) zerolog.Logger {
 
 	lvl, err := zerolog.ParseLevel(level)
 	if err != nil || lvl == zerolog.NoLevel {
-		lvl = zerolog.InfoLevel
+		lvl = zerolog.DebugLevel
 	}
 
 	return zerolog.New(writer).With().Timestamp().Logger().Level(lvl)
