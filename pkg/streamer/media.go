@@ -2,10 +2,11 @@ package streamer
 
 import (
 	"fmt"
-	"github.com/pion/sdp/v3"
 	"strconv"
 	"strings"
 	"unicode"
+
+	"github.com/pion/sdp/v3"
 )
 
 const (
@@ -88,6 +89,8 @@ func (m *Media) MatchCodec(codec *Codec) *Codec {
 	return nil
 }
 
+// m is server stream
+// media is client could accept stream
 func (m *Media) MatchMedia(media *Media) *Codec {
 	if m.Kind != media.Kind {
 		return nil

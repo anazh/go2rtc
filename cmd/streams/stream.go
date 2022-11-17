@@ -69,13 +69,13 @@ func (s *Stream) AddConsumer(cons streamer.Consumer) (err error) {
 					Msgf("[streams] producer=%d candidate=%d", ip, ipc)
 
 				// Step 3. Match consumer/producer codecs list
-				prodCodec := prodMedia.MatchMedia(consMedia)
+				prodCodec := prodMedia.MatchMedia(consMedia) //to match server stream and client support stream format
 				if prodCodec != nil {
 					log.Trace().Stringer("codec", prodCodec).
 						Msgf("[streams] match producer:%d:%d => consumer:%d:%d", ip, ipc, ic, icc)
 
 					// Step 4. Get producer track
-					prodTrack := prod.GetTrack(prodMedia, prodCodec)
+					prodTrack := prod.GetTrack(prodMedia, prodCodec) //what is track
 					if prodTrack == nil {
 						log.Warn().Msg("[stream] can't get track")
 						continue
